@@ -67,37 +67,47 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: true,
                 ),
                 SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Masuk",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.blue),
-                  ),
-                ),
-                SizedBox(height: 20),
-                TextButton(
-                  // Tombol tautan ke halaman pendaftaran
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            RegisterPage(), // Gantilah dengan nama kelas halaman pendaftaran Anda
+                Row(
+                  mainAxisAlignment: MainAxisAlignment
+                      .end, // Meletakkan teks "Daftar" dan tombol "Masuk" di sebelah kanan
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        // Logika untuk tombol "Masuk" di sini
+                      },
+                      child: Text(
+                        "Masuk",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    );
-                  },
-                  child: Text(
-                    "Belum punya akun? Daftar di sini",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.blue, // Warna teks tautan
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.blue),
+                      ),
                     ),
-                  ),
+                    SizedBox(
+                        width:
+                            10), // Jarak antara tombol "Masuk" dan teks "Daftar"
+                    TextButton(
+                      // Teks "Daftar" sebagai tautan ke halaman pendaftaran
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                RegisterPage(), // Gantilah dengan nama kelas halaman pendaftaran Anda
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "Daftar",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.blue, // Warna teks tautan
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -21,8 +21,7 @@ class _RegisterPageState extends State<RegisterPage> {
       drawer: Sidebar(),
       appBar: AppBar(
         title: Text("Register"),
-        backgroundColor:
-            Colors.blue, // Ubah warna latar belakang AppBar menjadi biru
+        backgroundColor: Colors.blue,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -100,36 +99,40 @@ class _RegisterPageState extends State<RegisterPage> {
                     obscureText: true,
                   ),
                   SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text(
-                      "Daftar",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.blue),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  TextButton(
-                    // Tombol tautan ke halaman pendaftaran
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => LoginPage(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text(
+                          "Daftar",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      );
-                    },
-                    child: Text(
-                      "Sudah Punya akun? Masuk di sini",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.blue, // Warna teks tautan
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.blue),
+                        ),
                       ),
-                    ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => LoginPage(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          "Masuk",
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

@@ -1,3 +1,4 @@
+import 'package:absen_kantor/ui/LoginPage.dart';
 import 'package:flutter/material.dart';
 import '../widget/sidebar.dart';
 
@@ -8,64 +9,41 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       drawer: Sidebar(),
       appBar: AppBar(title: Text("HomePage")),
-      body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text("Hallo, Caraka Widi"),
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              width: 500,
-              decoration: BoxDecoration(color: Colors.lightGreen),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(children: [
-                  Text(
-                    "15 April 2023",
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                            "08.00",
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          ),
-                          Text(
-                            "MASUK",
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text(
-                            "16.00",
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          ),
-                          Text(
-                            "KELUAR",
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          )
-                        ],
-                      )
-                    ],
-                  )
-                ]),
+            Text(
+              "Selamat Datang di Aplikasi Absensi Kantor Kelompok 1",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
-            )
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                );
+              },
+              child: Text(
+                "Login",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.blue),
+              ),
+            ),
           ],
         ),
-      )),
+      ),
     );
   }
 }

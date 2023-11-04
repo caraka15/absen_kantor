@@ -1,6 +1,5 @@
 import 'package:absen_kantor/ui/LoginPage.dart';
 import 'package:flutter/material.dart';
-import '../ui/home.dart';
 
 class Sidebar extends StatelessWidget {
   const Sidebar({Key? key}) : super(key: key);
@@ -15,19 +14,8 @@ class Sidebar extends StatelessWidget {
               accountEmail: Text("NIP : 17210390")),
           ListTile(
             leading: Icon(Icons.home),
-            title: Text("Beranda"),
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => HomePage()));
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.login),
-            title: Text("Login"),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LoginPage()));
-            },
+            title: Text("Absen"),
+            onTap: () {},
           ),
           ListTile(
             leading: Icon(Icons.history_edu),
