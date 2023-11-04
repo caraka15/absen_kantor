@@ -1,4 +1,5 @@
 import 'package:absen_kantor/ui/LoginPage.dart';
+import 'package:absen_kantor/ui/absen.dart';
 import 'package:flutter/material.dart';
 
 class Sidebar extends StatelessWidget {
@@ -15,7 +16,12 @@ class Sidebar extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.home),
             title: Text("Absen"),
-            onTap: () {},
+             onTap: () {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => AbsenPage()),
+                  (Route<dynamic> route) => false);
+            },
           ),
           ListTile(
             leading: Icon(Icons.history_edu),
