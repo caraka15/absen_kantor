@@ -1,3 +1,4 @@
+import 'package:absen_kantor/ui/LoginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:absen_kantor/widget/sidebar.dart';
 
@@ -110,6 +111,24 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.blue),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  TextButton(
+                    // Tombol tautan ke halaman pendaftaran
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => LoginPage(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "Sudah Punya akun? Masuk di sini",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.blue, // Warna teks tautan
+                      ),
                     ),
                   ),
                 ],

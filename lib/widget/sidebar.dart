@@ -1,5 +1,4 @@
 import 'package:absen_kantor/ui/LoginPage.dart';
-import 'package:absen_kantor/ui/RegisterPage.dart';
 import 'package:flutter/material.dart';
 import '../ui/home.dart';
 
@@ -28,14 +27,6 @@ class Sidebar extends StatelessWidget {
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => LoginPage()));
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.person),
-            title: Text("Register"),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => RegisterPage()));
             },
           ),
           ListTile(

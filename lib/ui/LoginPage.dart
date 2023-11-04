@@ -1,3 +1,4 @@
+import 'package:absen_kantor/ui/RegisterPage.dart';
 import 'package:flutter/material.dart';
 import 'package:absen_kantor/widget/sidebar.dart';
 
@@ -31,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
                 Text(
                   "Login",
                   style: TextStyle(
-                    fontSize: 32, // Ukuran teks
+                    fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: Colors.blue,
                   ),
@@ -77,6 +78,25 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.blue),
+                  ),
+                ),
+                SizedBox(height: 20),
+                TextButton(
+                  // Tombol tautan ke halaman pendaftaran
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            RegisterPage(), // Gantilah dengan nama kelas halaman pendaftaran Anda
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "Belum punya akun? Daftar di sini",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.blue, // Warna teks tautan
+                    ),
                   ),
                 ),
               ],
