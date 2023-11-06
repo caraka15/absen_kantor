@@ -1,18 +1,32 @@
+import 'package:absen_kantor/material/color.dart';
+import 'package:absen_kantor/ui/absen.dart';
 import 'package:absen_kantor/ui/home.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(),
+      home: MainPage(),
+      theme: ThemeData(
+        primarySwatch: greengood,
+      ),
+    );
+  }
+}
+
+class MainPage extends StatelessWidget {
+  final bool isLoggedIn =
+      false; // Gantilah dengan logika login yang sesungguhnya
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: isLoggedIn ? AbsenPage() : HomePage(),
     );
   }
 }

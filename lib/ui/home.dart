@@ -1,3 +1,4 @@
+import 'package:absen_kantor/material/color.dart';
 import 'package:absen_kantor/ui/LoginPage.dart';
 import 'package:flutter/material.dart';
 import '../widget/sidebar.dart';
@@ -38,7 +39,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.blue),
+                backgroundColor: MaterialStateProperty.all(greengood),
               ),
             ),
           ],

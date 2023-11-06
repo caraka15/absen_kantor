@@ -1,3 +1,4 @@
+import 'package:absen_kantor/material/color.dart';
 import 'package:absen_kantor/ui/LoginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:absen_kantor/widget/sidebar.dart';
@@ -21,7 +22,7 @@ class _RegisterPageState extends State<RegisterPage> {
       drawer: Sidebar(),
       appBar: AppBar(
         title: Text("Register"),
-        backgroundColor: Colors.blue,
+        backgroundColor: greengood,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -37,7 +38,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue,
+                      color: greengood,
                     ),
                   ),
                   SizedBox(height: 20),
@@ -100,7 +101,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   SizedBox(height: 20),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       ElevatedButton(
                         onPressed: () {},
@@ -112,8 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                         style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.blue),
+                          backgroundColor: MaterialStateProperty.all(greengood),
                         ),
                       ),
                       TextButton(
@@ -128,7 +128,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           "Masuk",
                           style: TextStyle(
                             fontSize: 18,
-                            color: Colors.blue,
+                            color: greengood,
                           ),
                         ),
                       ),

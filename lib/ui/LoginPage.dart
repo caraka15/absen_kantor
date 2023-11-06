@@ -1,3 +1,4 @@
+import 'package:absen_kantor/material/color.dart';
 import 'package:absen_kantor/ui/RegisterPage.dart';
 import 'package:flutter/material.dart';
 import 'package:absen_kantor/widget/sidebar.dart';
@@ -19,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
       drawer: Sidebar(),
       appBar: AppBar(
         title: Text("Login"),
-        backgroundColor: Colors.blue,
+        backgroundColor: greengood,
       ),
       body: SafeArea(
         child: Padding(
@@ -34,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+                    color: greengood,
                   ),
                 ),
                 SizedBox(height: 20),
@@ -83,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.blue),
+                        backgroundColor: MaterialStateProperty.all(greengood),
                       ),
                     ),
                     SizedBox(
@@ -103,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                         "Daftar",
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.blue, // Warna teks tautan
+                          color: greengood, // Warna teks tautan
                         ),
                       ),
                     ),
