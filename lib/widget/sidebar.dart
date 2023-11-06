@@ -1,5 +1,6 @@
 import 'package:absen_kantor/ui/LoginPage.dart';
 import 'package:absen_kantor/ui/absen.dart';
+import 'package:absen_kantor/ui/historyAbsen.dart';
 import 'package:flutter/material.dart';
 
 class Sidebar extends StatelessWidget {
@@ -11,12 +12,12 @@ class Sidebar extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-              accountName: Text("Caraka"),
-              accountEmail: Text("NIP : 17210390")),
+              accountName: Text("Caraka, Bagas"),
+              accountEmail: Text("NIP : 17210390, 17210256")),
           ListTile(
             leading: Icon(Icons.home),
             title: Text("Absen"),
-             onTap: () {
+            onTap: () {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => AbsenPage()),
@@ -26,7 +27,12 @@ class Sidebar extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.history_edu),
             title: Text("Riwayat Absensi"),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HistoryAbsenPage()),
+                  (Route<dynamic> route) => false);
+            },
           ),
           ListTile(
             leading: Icon(Icons.logout_rounded),
