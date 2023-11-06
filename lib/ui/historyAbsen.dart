@@ -28,18 +28,28 @@ class HistoryAbsenPage extends StatelessWidget {
         itemCount: absenRecords.length,
         itemBuilder: (context, index) {
           return Container(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(8.0),
             margin: EdgeInsets.all(8.0),
             decoration: BoxDecoration(
+              color: Color.fromARGB(255, 67, 155, 146),
               border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Tanggal: ${absenRecords[index].tanggal}'),
-                Text('Jam Masuk: ${absenRecords[index].jamMasuk}'),
-                Text('Jam Pulang: ${absenRecords[index].jamPulang}'),
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text('Tanggal: ${absenRecords[index].tanggal}',style: TextStyle(color: Colors.white),),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text('Jam Masuk: ${absenRecords[index].jamMasuk}'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text('Jam Pulang: ${absenRecords[index].jamPulang}'),
+                ),
               ],
             ),
           );

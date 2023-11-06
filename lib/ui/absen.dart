@@ -22,13 +22,13 @@ class _AbsenPageState extends State<AbsenPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Hallo, Caraka Widi"),
+            Text("Hallo, Bagas"),
             SizedBox(
               height: 20,
             ),
             Container(
               width: 500,
-              decoration: BoxDecoration(color: Colors.lightGreen),
+              decoration: BoxDecoration(color: Color.fromARGB(255, 67, 155, 146)),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(children: [
