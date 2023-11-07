@@ -1,7 +1,8 @@
+import 'package:absen_kantor/material/widgetLogout.dart';
 import 'package:flutter/material.dart';
 
 class AbsenPage extends StatefulWidget {
-  const AbsenPage({super.key});
+  const AbsenPage({Key? key}) : super(key: key);
 
   @override
   State<AbsenPage> createState() => _AbsenPageState();
@@ -13,6 +14,15 @@ class _AbsenPageState extends State<AbsenPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Absensi Kantor"),
+        actions: [
+          // Tombol Logout di AppBar
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: () {
+              LogoutHandler.showLogoutConfirmation(context);
+            },
+          ),
+        ],
       ),
       body: SafeArea(
           child: Padding(

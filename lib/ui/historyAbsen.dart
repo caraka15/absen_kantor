@@ -1,4 +1,4 @@
-import 'package:absen_kantor/widget/sidebar.dart';
+import 'package:absen_kantor/material/widgetLogout.dart';
 import 'package:flutter/material.dart';
 
 class AbsenRecord {
@@ -26,6 +26,15 @@ class HistoryAbsenPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('History Absen'),
+        actions: [
+          // Tombol Logout di AppBar
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: () {
+              LogoutHandler.showLogoutConfirmation(context);
+            },
+          ),
+        ],
       ),
       body: ListView.builder(
         itemCount: absenRecords.length,

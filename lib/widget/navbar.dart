@@ -46,11 +46,11 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
             label: 'Absen',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
+            icon: Icon(Icons.library_books),
             label: 'History',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
+            icon: Icon(Icons.person),
             label: 'Profile',
           ),
         ],
