@@ -1,4 +1,3 @@
-import 'package:absen_kantor/widget/sidebar.dart';
 import 'package:flutter/material.dart';
 
 class AbsenPage extends StatefulWidget {
@@ -12,7 +11,6 @@ class _AbsenPageState extends State<AbsenPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Sidebar(),
       appBar: AppBar(
         title: Text("Absensi Kantor"),
       ),
@@ -28,7 +26,8 @@ class _AbsenPageState extends State<AbsenPage> {
             ),
             Container(
               width: 500,
-              decoration: BoxDecoration(color: Color.fromARGB(255, 67, 155, 146)),
+              decoration:
+                  BoxDecoration(color: Color.fromARGB(255, 67, 155, 146)),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(children: [

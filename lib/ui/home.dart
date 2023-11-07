@@ -1,14 +1,12 @@
 import 'package:absen_kantor/material/color.dart';
 import 'package:absen_kantor/ui/LoginPage.dart';
 import 'package:flutter/material.dart';
-import '../widget/sidebar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Sidebar(),
       appBar: AppBar(title: Text("HomePage")),
       body: Center(
         child: Column(

@@ -1,7 +1,7 @@
 import 'package:absen_kantor/material/color.dart';
 import 'package:absen_kantor/ui/RegisterPage.dart';
+import 'package:absen_kantor/ui/homeAuth.dart';
 import 'package:flutter/material.dart';
-import 'package:absen_kantor/widget/sidebar.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key});
@@ -17,7 +17,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Sidebar(),
       appBar: AppBar(
         title: Text("Login"),
         backgroundColor: greengood,
@@ -30,12 +29,14 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  "Login",
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: greengood,
+                Center(
+                  child: Text(
+                    "Login",
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: greengood,
+                    ),
                   ),
                 ),
                 SizedBox(height: 20),
@@ -74,7 +75,12 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        // Logika untuk tombol "Masuk" di sini
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                HomePageAuth(), // Gantilah dengan nama kelas halaman pendaftaran Anda
+                          ),
+                        );
                       },
                       child: Text(
                         "Masuk",

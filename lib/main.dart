@@ -1,6 +1,6 @@
 import 'package:absen_kantor/material/color.dart';
-import 'package:absen_kantor/ui/absen.dart';
 import 'package:absen_kantor/ui/home.dart';
+import 'package:absen_kantor/ui/homeAuth.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -26,7 +26,7 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: isLoggedIn ? AbsenPage() : HomePage(),
+      body: isLoggedIn ? HomePageAuth() : HomePage(),
     );
   }
 }

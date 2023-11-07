@@ -1,7 +1,6 @@
 import 'package:absen_kantor/material/color.dart';
 import 'package:absen_kantor/ui/LoginPage.dart';
 import 'package:flutter/material.dart';
-import 'package:absen_kantor/widget/sidebar.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key});
@@ -19,7 +18,6 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Sidebar(),
       appBar: AppBar(
         title: Text("Register"),
         backgroundColor: greengood,
@@ -33,12 +31,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "Register",
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: greengood,
+                  Center(
+                    child: Text(
+                      "Register",
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: greengood,
+                      ),
                     ),
                   ),
                   SizedBox(height: 20),
