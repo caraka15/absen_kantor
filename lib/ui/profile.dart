@@ -1,9 +1,13 @@
+import 'package:absen_kantor/material/color.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: greengood,
+      ),
       home: Scaffold(
         appBar: AppBar(
           title: Text('Profil Saya'),
@@ -21,11 +25,16 @@ class ProfileForm extends StatefulWidget {
 
 class _ProfileFormState extends State<ProfileForm> {
   bool isEditing = false;
-  TextEditingController nameController = TextEditingController(text: 'Nama Anda');
-  TextEditingController birthDateController = TextEditingController(text: 'Tanggal Lahir Anda');
-  TextEditingController positionController = TextEditingController(text: 'Jabatan Anda');
-  TextEditingController emailController = TextEditingController(text: 'alamat@email.com');
-  TextEditingController phoneNumberController = TextEditingController(text: 'Nomor Anda');
+  TextEditingController nameController =
+      TextEditingController(text: 'Nama Anda');
+  TextEditingController birthDateController =
+      TextEditingController(text: 'Tanggal Lahir Anda');
+  TextEditingController positionController =
+      TextEditingController(text: 'Jabatan Anda');
+  TextEditingController emailController =
+      TextEditingController(text: 'alamat@email.com');
+  TextEditingController phoneNumberController =
+      TextEditingController(text: 'Nomor Anda');
 
   @override
   Widget build(BuildContext context) {
