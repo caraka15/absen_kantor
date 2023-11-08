@@ -1,19 +1,24 @@
-import 'package:absen_kantor/material/color.dart';
+import 'package:absen_kantor/material/widgetLogout.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: greengood,
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text('Profil Saya'),
+        actions: [
+          // Tombol Logout di AppBar
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: () {
+              LogoutHandler.showLogoutConfirmation(context);
+            },
+          ),
+        ],
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Profil Saya'),
-        ),
-        body: ProfileForm(),
-      ),
+      body: ProfileForm(),
     );
   }
 }
@@ -42,6 +47,7 @@ class _ProfileFormState extends State<ProfileForm> {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: <Widget>[
+          SizedBox(height: 16),
           TextFormField(
             controller: nameController,
             decoration: InputDecoration(labelText: 'Nama Anda'),

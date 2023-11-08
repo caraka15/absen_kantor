@@ -13,6 +13,7 @@ class _AbsenPageState extends State<AbsenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text("Absensi Kantor"),
         actions: [
           // Tombol Logout di AppBar

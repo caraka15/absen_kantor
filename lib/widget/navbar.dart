@@ -3,19 +3,6 @@ import 'package:absen_kantor/ui/historyAbsen.dart';
 import 'package:absen_kantor/ui/profile.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: MyBottomNavigationBar(),
-    );
-  }
-}
-
 class MyBottomNavigationBar extends StatefulWidget {
   @override
   _MyBottomNavigationBarState createState() => _MyBottomNavigationBarState();

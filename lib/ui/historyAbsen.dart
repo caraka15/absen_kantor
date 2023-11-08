@@ -25,6 +25,7 @@ class HistoryAbsenPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('History Absen'),
         actions: [
           // Tombol Logout di AppBar
