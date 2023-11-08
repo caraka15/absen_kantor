@@ -1,5 +1,6 @@
 import 'package:absen_kantor/ui/absen.dart';
 import 'package:absen_kantor/ui/historyAbsen.dart';
+import 'package:absen_kantor/ui/profile.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -26,7 +27,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   static List<Widget> _widgetOptions = <Widget>[
     AbsenPage(),
     HistoryAbsenPage(),
-    Text("Profile"),
+    ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
