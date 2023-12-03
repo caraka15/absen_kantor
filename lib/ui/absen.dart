@@ -26,64 +26,88 @@ class _AbsenPageState extends State<AbsenPage> {
         ],
       ),
       body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Hallo, Bagas"),
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              width: 500,
-              decoration:
-                  BoxDecoration(color: Color.fromARGB(255, 67, 155, 146)),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(children: [
-                  Text(
-                    "15 April 2023",
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Hallo, Bagas"),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: 500,
+                decoration: BoxDecoration(color: Color.fromARGB(255, 67, 155, 146)),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
                     children: [
-                      Column(
+                      Text(
+                        "15 April 2023",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                            "08.00",
-                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          Column(
+                            children: [
+                              Text(
+                                "08.00",
+                                style: TextStyle(color: Colors.white, fontSize: 16),
+                              ),
+                              Text(
+                                "MASUK",
+                                style: TextStyle(color: Colors.white, fontSize: 16),
+                              )
+                            ],
                           ),
-                          Text(
-                            "MASUK",
-                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          Column(
+                            children: [
+                              Text(
+                                "16.00",
+                                style: TextStyle(color: Colors.white, fontSize: 16),
+                              ),
+                              Text(
+                                "KELUAR",
+                                style: TextStyle(color: Colors.white, fontSize: 16),
+                              )
+                            ],
                           )
                         ],
                       ),
-                      Column(
-                        children: [
-                          Text(
-                            "16.00",
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          ),
-                          Text(
-                            "KELUAR",
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          )
-                        ],
-                      )
                     ],
-                  )
-                ]),
+                  ),
+                ),
               ),
-            )
-          ],
+              SizedBox(
+                height: 20,
+              ),
+              // Buttons for Absen Masuk and Absen Keluar
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // Handle Absen Masuk
+                    },
+                    child: Text("Absen Masuk"),
+                  ),
+                  SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Handle Absen Keluar
+                    },
+                    child: Text("Absen Keluar"),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-      )),
+      ),
     );
   }
 }
