@@ -2,6 +2,8 @@ import 'package:absen_kantor/material/color.dart';
 import 'package:absen_kantor/ui/RegisterPage.dart';
 import 'package:absen_kantor/ui/homeAuth.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key});
@@ -74,13 +76,23 @@ class _LoginPageState extends State<LoginPage> {
                       .end, // Meletakkan teks "Daftar" dan tombol "Masuk" di sebelah kanan
                   children: [
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                HomePageAuth(), // Gantilah dengan nama kelas halaman pendaftaran Anda
-                          ),
-                        );
+                      onPressed: () async {
+
+                        String? resultResponse = await loginUser(emailController.text, passwordController.text);
+                        final bodyJson = json.decode(resultResponse);
+                        print('JSON: ${bodyJson}');
+
+                        bool status = bodyJson['status'];
+                        print('Status: $status');
+
+                        if(status == true) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  HomePageAuth(), // Gantilah dengan nama kelas halaman pendaftaran Anda
+                            ),
+                          );
+                        }
                       },
                       child: Text(
                         "Masuk",
@@ -122,5 +134,31 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Future<String> loginUser(String nip, String password) {
+    try {
+      final response = http.post(
+        Uri.parse('http://123.100.226.157:8282/auth/login'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'nip': nip,
+          'password': password
+        }),
+      );
+
+      return response.then((http.Response response) {
+        print('Response body: ${response.body}');
+          return response.body;
+      }).catchError((error) {
+        print('Error: $error');
+        throw "Server Down";
+      });
+    } catch (error) {
+      print('Error: $error');
+      throw error;
+    }
   }
 }
