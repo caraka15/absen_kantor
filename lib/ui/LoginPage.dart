@@ -4,6 +4,7 @@ import 'package:absen_kantor/ui/homeAuth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key});
@@ -15,6 +16,100 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  String selectedRole = 'PEGAWAI'; // Default value
+
+  @override
+  void initState() {
+    super.initState();
+    // Panggil metode async terpisah untuk inisialisasi
+    _initializeLogin();
+  }
+
+  Future<void> _initializeLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String initialNip = prefs.getString('nip') ?? '';
+    String initialPassword = prefs.getString('password') ?? '';
+    String initialRole = prefs.getString('role') ?? '';
+
+    print('Initial NIP: $initialNip');
+    print('Initial Password: $initialPassword');
+    print('Initial Role: $initialRole');
+
+    await loginUser(initialNip, initialPassword, initialRole);
+  }
+
+  Future<void> loginUser(String nip, String password, String role) async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://123.100.226.157:8282/auth/login'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          <String, String>{'nip': nip, 'password': password, 'role': role},
+        ),
+      );
+
+      final bodyJson = json.decode(response.body);
+
+      bool status = bodyJson['status'];
+
+      if (status == true) {
+        // Login berhasil, kembalikan muserId
+        String muserId = bodyJson['data']['user']['muserId'];
+
+        // Cek apakah ada token dalam response
+        String? token = bodyJson['data']['token'];
+
+        if (token != null && token.isNotEmpty) {
+          // Simpan token ke shared preferences
+          await saveTokenToSharedPreferences(token);
+
+          // Token ada, langsung menuju HomePageAuth
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => HomePageAuth(muserId: muserId),
+            ),
+          );
+        } else {
+          // Token tidak ada, mungkin implementasinya berbeda
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => LoginPage(),
+            ),
+          );
+        }
+      } else {
+        // Login gagal, handle sesuai kebutuhan
+        // Contoh: tampilkan pesan error
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Login Gagal'),
+              content: Text('Email atau password salah'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (error) {
+      print('Error: $error');
+      throw error;
+    }
+  }
+
+  Future<void> saveTokenToSharedPreferences(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('token', token);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,28 +166,39 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: true,
                 ),
                 SizedBox(height: 20),
+                Text(
+                  "Role",
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+                DropdownButton<String>(
+                  value: selectedRole,
+                  items: ['PEGAWAI', 'ADMIN'].map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    if (newValue != null) {
+                      setState(() {
+                        selectedRole = newValue;
+                      });
+                    }
+                  },
+                ),
+                SizedBox(height: 20),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment
-                      .end, // Meletakkan teks "Daftar" dan tombol "Masuk" di sebelah kanan
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ElevatedButton(
                       onPressed: () async {
-
-                        String? resultResponse = await loginUser(emailController.text, passwordController.text);
-                        final bodyJson = json.decode(resultResponse);
-                        print('JSON: ${bodyJson}');
-
-                        bool status = bodyJson['status'];
-                        print('Status: $status');
-
-                        if(status == true) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  HomePageAuth(), // Gantilah dengan nama kelas halaman pendaftaran Anda
-                            ),
-                          );
-                        }
+                        await loginUser(
+                          emailController.text,
+                          passwordController.text,
+                          selectedRole,
+                        );
                       },
                       child: Text(
                         "Masuk",
@@ -105,16 +211,12 @@ class _LoginPageState extends State<LoginPage> {
                         backgroundColor: MaterialStateProperty.all(greengood),
                       ),
                     ),
-                    SizedBox(
-                        width:
-                            10), // Jarak antara tombol "Masuk" dan teks "Daftar"
+                    SizedBox(width: 10),
                     TextButton(
-                      // Teks "Daftar" sebagai tautan ke halaman pendaftaran
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) =>
-                                RegisterPage(), // Gantilah dengan nama kelas halaman pendaftaran Anda
+                            builder: (context) => RegisterPage(),
                           ),
                         );
                       },
@@ -122,7 +224,7 @@ class _LoginPageState extends State<LoginPage> {
                         "Daftar",
                         style: TextStyle(
                           fontSize: 16,
-                          color: greengood, // Warna teks tautan
+                          color: greengood,
                         ),
                       ),
                     ),
@@ -134,31 +236,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  Future<String> loginUser(String nip, String password) {
-    try {
-      final response = http.post(
-        Uri.parse('http://123.100.226.157:8282/auth/login'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'nip': nip,
-          'password': password
-        }),
-      );
-
-      return response.then((http.Response response) {
-        print('Response body: ${response.body}');
-          return response.body;
-      }).catchError((error) {
-        print('Error: $error');
-        throw "Server Down";
-      });
-    } catch (error) {
-      print('Error: $error');
-      throw error;
-    }
   }
 }
