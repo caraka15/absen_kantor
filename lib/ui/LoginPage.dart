@@ -14,7 +14,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController emailController = TextEditingController();
+  TextEditingController nipController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   String selectedRole = 'PEGAWAI'; // Default value
 
@@ -35,7 +35,9 @@ class _LoginPageState extends State<LoginPage> {
     print('Initial Password: $initialPassword');
     print('Initial Role: $initialRole');
 
-    await loginUser(initialNip, initialPassword, initialRole);
+    if (initialNip.isNotEmpty) {
+      await loginUser(initialNip, initialPassword, initialRole);
+    }
   }
 
   Future<void> loginUser(String nip, String password, String role) async {
@@ -82,6 +84,7 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         // Login gagal, handle sesuai kebutuhan
         // Contoh: tampilkan pesan error
+        print('Masuk Sini?');
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -138,15 +141,15 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  "Email",
+                  "NIP",
                   style: TextStyle(
                     fontSize: 18,
                   ),
                 ),
                 TextField(
-                  controller: emailController,
+                  controller: nipController,
                   decoration: InputDecoration(
-                    hintText: "Enter your email",
+                    hintText: "Masukkan NIP Anda",
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -160,7 +163,7 @@ class _LoginPageState extends State<LoginPage> {
                 TextField(
                   controller: passwordController,
                   decoration: InputDecoration(
-                    hintText: "Enter your password",
+                    hintText: "Masukkan Password Anda",
                     border: OutlineInputBorder(),
                   ),
                   obscureText: true,
@@ -195,7 +198,7 @@ class _LoginPageState extends State<LoginPage> {
                     ElevatedButton(
                       onPressed: () async {
                         await loginUser(
-                          emailController.text,
+                          nipController.text,
                           passwordController.text,
                           selectedRole,
                         );
