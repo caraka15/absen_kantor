@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:absen_kantor/ui/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:absen_kantor/ui/LoginPage.dart';
 
 class LogoutHandler {
   static void showLogoutConfirmation(BuildContext context) {
@@ -16,10 +17,14 @@ class LogoutHandler {
               child: Text('Batal'),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
+                // Hapus data dari shared preferences
+                await clearSharedPreferences();
+
+                // Pindah ke halaman login setelah logout
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
-                    builder: (context) => HomePage(),
+                    builder: (context) => LoginPage(),
                   ),
                   (Route<dynamic> route) => false,
                 );
@@ -30,5 +35,11 @@ class LogoutHandler {
         );
       },
     );
+  }
+
+  static Future<void> clearSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Hapus semua data yang ada di shared preferences
+    await prefs.clear();
   }
 }
