@@ -1,19 +1,81 @@
-import 'package:absen_kantor/material/color.dart';
 import 'package:flutter/material.dart';
-import 'package:absen_kantor/ui/home.dart'; // Gantilah dengan file home yang sesuai
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:absen_kantor/ui/home.dart';
+import 'package:absen_kantor/ui/homeAuth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
+import 'material/color.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(),
+      home: FutureBuilder<Map<String, String>>(
+        // Membaca token dan user key dari FlutterSecureStorage
+        future: _readKeys(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            // Jika token dan user key sudah ada, membaca nilainya
+            if (snapshot.hasData && snapshot.data != null) {
+              Map<String, String> values = snapshot.data ?? {};
+
+              String allValue = values['all'] ?? '';
+
+              print('All Value: $allValue');
+              String token = "";
+              String mUserId = "";
+              if(allValue != '') {
+                List<String> valueSplit = allValue.split(',');
+                token = valueSplit[0];
+                mUserId = valueSplit[1];
+              }
+
+              // Logika navigasi berdasarkan token dan mUserId
+              Widget destinationPage;
+              if (token.isNotEmpty && mUserId.isNotEmpty) {
+
+                destinationPage = HomePageAuth(muserId: mUserId);
+              } else {
+                destinationPage = HomePage();
+              }
+
+              return Navigator(
+                onGenerateRoute: (settings) {
+                  return MaterialPageRoute(builder: (context) => destinationPage);
+                },
+              );
+            } else {
+              // Jika token atau user key belum ada, navigasi ke halaman home
+              return Navigator(
+                onGenerateRoute: (settings) {
+                  return MaterialPageRoute(builder: (context) => HomePage());
+                },
+              );
+            }
+          } else {
+            // Tampilkan loader atau widget lain selama pemeriksaan token berlangsung
+            return CircularProgressIndicator();
+          }
+        },
+      ),
       theme: ThemeData(
-        primarySwatch: greengood,
+        primarySwatch: Colors.green,
       ),
     );
+  }
+
+  Future<Map<String, String>> _readKeys() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String all = prefs.getString('all') ?? '';
+
+    return {'all': all};
   }
 }

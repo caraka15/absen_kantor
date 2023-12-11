@@ -284,6 +284,28 @@ class _RegisterPageState extends State<RegisterPage> {
           );
         },
       );
+    }
+
+    final bodyJson = json.decode(response.body);
+    String message = bodyJson['message'];
+    if (statusCode == 400){
+      // Show a pop-up
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(message),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
     } else {
       return null;
     }

@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   validators: ^3.0.0
+  flutter_secure: ^1.0.1
   flutter:
     sdk: flutter
 

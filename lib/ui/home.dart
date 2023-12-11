@@ -6,6 +6,7 @@ class HomePage extends StatelessWidget {
   const HomePage({super.key});
   @override
   Widget build(BuildContext context) {
+    print("Masuk Home Berapa Kali");
     return Scaffold(
       appBar: AppBar(title: Text("HomePage")),
       body: Center(

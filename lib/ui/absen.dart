@@ -27,6 +27,7 @@ class _AbsenPageState extends State<AbsenPage> {
     final response = await http.get(
       Uri.parse('http://123.100.226.157:8282/user/getByOne/${widget.muserId}'),
     );
+    print('Masuk Absen Berapa Kali');
 
     if (response.statusCode == 200) {
       return json.decode(response.body);
