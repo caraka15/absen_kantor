@@ -44,7 +44,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         style: TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
-                          color: Colors.green, // Assuming greengood is a Color variable
+                          color: Colors
+                              .green, // Assuming greengood is a Color variable
                         ),
                       ),
                     ),
@@ -192,11 +193,12 @@ class _RegisterPageState extends State<RegisterPage> {
                             // Validasi form sebelum melanjutkan
                             if (_formKey.currentState?.validate() ?? false) {
                               // Semua bidang valid, navigasi ke halaman berikutnya
-                             createUser(nipController.text,
-                                 nameController.text,
-                                 nomorTeleponController.text,
-                                 emailController.text,
-                                 passwordController.text);
+                              createUser(
+                                  nipController.text,
+                                  nameController.text,
+                                  nomorTeleponController.text,
+                                  emailController.text,
+                                  passwordController.text);
                             }
                           },
                           child: Text(
@@ -207,7 +209,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.green),
+                            backgroundColor:
+                                MaterialStateProperty.all(greengood),
                           ),
                         ),
                         TextButton(
@@ -222,7 +225,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             "Masuk",
                             style: TextStyle(
                               fontSize: 18,
-                              color: Colors.green,
+                              color: greengood,
                             ),
                           ),
                         ),
@@ -238,7 +241,8 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Future<void> createUser(String nip, String nama, String nomorTlp, String email, String password) async {
+  Future<void> createUser(String nip, String nama, String nomorTlp,
+      String email, String password) async {
     final response = await http.post(
       Uri.parse('http://123.100.226.157:8282/user/add'),
       headers: <String, String>{
@@ -315,5 +319,4 @@ class _RegisterPageState extends State<RegisterPage> {
     final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
     return emailRegex.hasMatch(email);
   }
-
 }
