@@ -1,3 +1,5 @@
+import 'package:absen_kantor/ui/LoginPage.dart';
+import 'package:absen_kantor/ui/RegisterPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:absen_kantor/ui/home.dart';
@@ -27,8 +29,14 @@ class MyApp extends StatelessWidget {
               Map<String, String> values = snapshot.data ?? {};
 
               String allValue = values['all'] ?? '';
+              String statusPage = values['statusPage'] ?? '';
+              int angkaStatusPage = 0;
 
-              print('All Value: $allValue');
+              if(statusPage != "login" && statusPage != "register") {
+                angkaStatusPage = statusPage.isNotEmpty ? int.parse(
+                    statusPage) : 0;
+              }
+
               String token = "";
               String mUserId = "";
               if(allValue != '') {
@@ -41,8 +49,15 @@ class MyApp extends StatelessWidget {
               Widget destinationPage;
               if (token.isNotEmpty && mUserId.isNotEmpty) {
 
-                destinationPage = HomePageAuth(muserId: mUserId);
+                destinationPage = HomePageAuth(muserId: mUserId, selectMenuIndex: angkaStatusPage);
+              } else if(statusPage == "login"){
+
+                destinationPage = LoginPage();
+              } else if(statusPage == "register") {
+
+                destinationPage = RegisterPage();
               } else {
+
                 destinationPage = HomePage();
               }
 
@@ -75,7 +90,10 @@ class MyApp extends StatelessWidget {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     String all = prefs.getString('all') ?? '';
+    String statusPage = prefs.getString('statusPage') ?? '';
 
-    return {'all': all};
+    Map<String, String> result = {'all': all, 'statusPage': statusPage};
+
+    return result;
   }
 }

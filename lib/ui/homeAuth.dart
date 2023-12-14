@@ -7,10 +7,12 @@ import 'package:absen_kantor/ui/profile.dart';
 
 class HomePageAuth extends StatefulWidget {
   final String muserId;
+  final int selectMenuIndex;
 
   const HomePageAuth({
     Key? key,
     required this.muserId,
+    required this.selectMenuIndex,
   }) : super(key: key);
 
   @override
@@ -19,6 +21,12 @@ class HomePageAuth extends StatefulWidget {
 
 class _HomePageAuthState extends State<HomePageAuth> {
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.selectMenuIndex;
+  }
 
   static List<Widget> _widgetOptions(String muserId) => <Widget>[
         AbsenPage(muserId: muserId),

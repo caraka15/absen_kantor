@@ -1,5 +1,6 @@
 import 'package:absen_kantor/material/widgetLogout.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AbsenRecord {
   final String tanggal;
@@ -10,16 +11,34 @@ class AbsenRecord {
       {required this.tanggal, required this.jamMasuk, required this.jamPulang});
 }
 
-class HistoryAbsenPage extends StatelessWidget {
+
+class HistoryAbsenPage extends StatefulWidget {
+
+  const HistoryAbsenPage({Key? key});
+
+  @override
+_HistoryAbsenState createState() => _HistoryAbsenState();
+
+}
+
+class _HistoryAbsenState extends State<HistoryAbsenPage> {
   final List<AbsenRecord> absenRecords = [
     AbsenRecord(
-        tanggal: '2023-11-01', jamMasuk: '08:00 AM', jamPulang: '05:00 PM'),
-    AbsenRecord(
-        tanggal: '2023-11-02', jamMasuk: '08:30 AM', jamPulang: '05:15 PM'),
-    AbsenRecord(
-        tanggal: '2023-11-03', jamMasuk: '09:00 AM', jamPulang: '05:30 PM'),
+        tanggal: '2023-11-01', jamMasuk: '08:00 AM', jamPulang: '05:00 PM')
     // Tambahkan data absen lainnya sesuai kebutuhan
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    // Panggil metode async terpisah untuk inisialisasi
+    _initializeStatusPage();
+  }
+
+  Future<void> _initializeStatusPage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('statusPage', '1');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +79,11 @@ class HistoryAbsenPage extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(1.0),
-                  child: Text('Jam Masuk: ${absenRecords[index].jamMasuk}'),
+                  child: Text('Absen Masuk: ${absenRecords[index].jamMasuk}'),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(1.0),
-                  child: Text('Jam Pulang: ${absenRecords[index].jamPulang}'),
+                  child: Text('Absen Pulang: ${absenRecords[index].jamPulang}'),
                 ),
               ],
             ),
@@ -73,4 +92,4 @@ class HistoryAbsenPage extends StatelessWidget {
       ),
     );
   }
-}
+ }

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class AbsenPage extends StatefulWidget {
   final String muserId;
 
@@ -15,12 +17,22 @@ class AbsenPage extends StatefulWidget {
 class _AbsenPageState extends State<AbsenPage> {
   late Future<Map<String, dynamic>> userData;
   late Future<Map<String, dynamic>> currentTime;
+  bool isAbsenMasukEnabled = false;
+  bool isAbsenKeluarEnabled = false;
 
   @override
   void initState() {
     super.initState();
     userData = _fetchUserData();
     currentTime = _fetchCurrentTime();
+    _initializeStatusPage();
+    _fetchStatusAbsenMasuk();
+    _fetchStatusAbsenKeluar();
+  }
+
+  Future<void> _initializeStatusPage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('statusPage', '0');
   }
 
   Future<Map<String, dynamic>> _fetchUserData() async {
@@ -33,6 +45,56 @@ class _AbsenPageState extends State<AbsenPage> {
       return json.decode(response.body);
     } else {
       throw Exception('Failed to load user data');
+    }
+  }
+
+  Future<Map<String, dynamic>?> _fetchStatusAbsenMasuk() async {
+
+    String api = 'http://123.100.226.157:8282/absen/cekStatus?mUserId=${widget.muserId}&tipe=';
+
+    // Cek Absen Masuk
+    final responseAbsenMasuk = await http.get(
+      Uri.parse(api + 'MASUK'),
+    );
+
+    if (responseAbsenMasuk.statusCode == 200) {
+      final bodyJson = json.decode(responseAbsenMasuk.body);
+      String message = bodyJson['message'];
+
+      if (message == "BELUM") {
+        isAbsenMasukEnabled = true;
+      } else if (message == "SUDAH") {
+        isAbsenMasukEnabled = false;
+      }
+
+      } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<Map<String, dynamic>?> _fetchStatusAbsenKeluar() async {
+
+    String api = 'http://123.100.226.157:8282/absen/cekStatus?mUserId=${widget.muserId}&tipe=';
+
+    // Cek Absen Keluar
+    final responseAbsenKeluar = await http.get(
+      Uri.parse(api + 'KELUAR'),
+    );
+
+    if (responseAbsenKeluar.statusCode == 200) {
+
+      final bodyJson = json.decode(responseAbsenKeluar.body);
+      String message = bodyJson['message'];
+
+      if(message == "BELUM"){
+
+        isAbsenKeluarEnabled = true;
+      } else if (message == "SUDAH"){
+
+        isAbsenKeluarEnabled = false;
+      }
+    } else {
+      throw Exception('Failed to load data');
     }
   }
 
@@ -191,16 +253,20 @@ class _AbsenPageState extends State<AbsenPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   ElevatedButton(
-                                    onPressed: () {
-                                      // Handle Absen Masuk
-                                    },
+                                    onPressed: isAbsenMasukEnabled
+                                        ? () {} : null,
+                                    style: ElevatedButton.styleFrom(
+                                      primary: isAbsenMasukEnabled ? Colors.green : Colors.grey,
+                                    ),
                                     child: Text("Absen Masuk"),
                                   ),
                                   SizedBox(width: 20),
                                   ElevatedButton(
-                                    onPressed: () {
-                                      // Handle Absen Keluar
-                                    },
+                                    onPressed: isAbsenKeluarEnabled
+                                        ? () {} : null,
+                                    style: ElevatedButton.styleFrom(
+                                      primary: isAbsenKeluarEnabled ? Colors.green : Colors.grey,
+                                    ),
                                     child: Text("Absen Keluar"),
                                   ),
                                 ],

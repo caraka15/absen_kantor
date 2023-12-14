@@ -24,6 +24,12 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     // Panggil metode async terpisah untuk inisialisasi
     _initializeLogin();
+    _initializeStatusPage();
+  }
+
+  Future<void> _initializeStatusPage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('statusPage', 'login');
   }
 
   Future<void> _initializeLogin() async {
@@ -71,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
           // Token ada, langsung menuju HomePageAuth
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => HomePageAuth(muserId: muserId),
+              builder: (context) => HomePageAuth(muserId: muserId, selectMenuIndex: 0),
             ),
           );
         } else {

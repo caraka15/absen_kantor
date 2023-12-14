@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key});
 
@@ -19,6 +21,54 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController nipController = TextEditingController();
   TextEditingController nomorTeleponController = TextEditingController();
+  TextEditingController jabatanController = TextEditingController();
+
+  List<String> jabatanList = []; // Daftar nama jabatan dari API
+  String selectedJabatan = ''; // Jabatan yang dipilih
+
+  Future<void> _fetchUserData() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://123.100.226.157:8282/jabatan/getAll'),
+      );
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        List<dynamic> jabatanDataList = jsonData['data'];
+
+        // Mendapatkan daftar nama jabatan dari data API
+        List<String> namaJabatan = jabatanDataList
+            .map((jabatan) => jabatan['nama'].toString())
+            .toList();
+
+        setState(() {
+          namaJabatan.add('');
+          jabatanList = namaJabatan;
+          // Set nilai default jika diperlukan
+          // selectedJabatan = jabatanList.isNotEmpty ? jabatanList[0] : '';
+        });
+
+      } else {
+        throw Exception('Failed to load user data');
+      }
+    } catch (error) {
+      print('Error fetching user data: $error');
+      // Handle error, mungkin tampilkan pesan kesalahan ke pengguna
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+    _initializeStatusPage();
+  }
+
+  Future<void> _initializeStatusPage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('statusPage', 'register');
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -140,6 +190,40 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     SizedBox(height: 30),
                     Text(
+                      "Jabatan",
+                      style: TextStyle(
+                        fontSize: 17,
+                      ),
+                    ),
+                    // Dropdown for Jabatan
+                    DropdownButtonFormField(
+                      value: selectedJabatan,
+                      items: jabatanList
+                          .map((String jabatan) => DropdownMenuItem(
+                        value: jabatan,
+                        child: Text(jabatan),
+                      ))
+                          .toSet() // Use toSet to eliminate duplicates
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedJabatan = value.toString();
+                          jabatanController.text = value.toString();
+                        });
+                      },
+                      decoration: InputDecoration(
+                        border: UnderlineInputBorder(),
+                        hintText: 'Pilih Jabatan',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Jabatan wajib diisi';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 30),
+                    Text(
                       "Password",
                       style: TextStyle(
                         fontSize: 17,
@@ -198,7 +282,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                   nameController.text,
                                   nomorTeleponController.text,
                                   emailController.text,
-                                  passwordController.text);
+                                  passwordController.text,
+                                  jabatanController.text,
+                              );
                             }
                           },
                           child: Text(
@@ -242,7 +328,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> createUser(String nip, String nama, String nomorTlp,
-      String email, String password) async {
+      String email, String password, String jabatan) async {
     final response = await http.post(
       Uri.parse('http://123.100.226.157:8282/user/add'),
       headers: <String, String>{
@@ -256,6 +342,7 @@ class _RegisterPageState extends State<RegisterPage> {
           'email': email,
           'password': password,
           'role': 'PEGAWAI',
+          'jabatan': jabatan,
         },
       ),
     );
