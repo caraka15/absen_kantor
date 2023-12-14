@@ -1,4 +1,5 @@
 import 'package:absen_kantor/material/widgetLogout.dart';
+import 'package:absen_kantor/ui/homeAuth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -60,6 +61,7 @@ class _AbsenPageState extends State<AbsenPage> {
     if (responseAbsenMasuk.statusCode == 200) {
       final bodyJson = json.decode(responseAbsenMasuk.body);
       String message = bodyJson['message'];
+      print('$message :Pesan');
 
       if (message == "BELUM") {
         isAbsenMasukEnabled = true;
@@ -87,7 +89,7 @@ class _AbsenPageState extends State<AbsenPage> {
       String message = bodyJson['message'];
 
       if(message == "BELUM"){
-
+        print('$message :Pesan');
         isAbsenKeluarEnabled = true;
       } else if (message == "SUDAH"){
 
@@ -254,7 +256,12 @@ class _AbsenPageState extends State<AbsenPage> {
                                 children: [
                                   ElevatedButton(
                                     onPressed: isAbsenMasukEnabled
-                                        ? () {} : null,
+                                        ? () async {
+                                      await _absen(
+                                        widget.muserId,
+                                        "MASUK"
+                                      );
+                                    } : null,
                                     style: ElevatedButton.styleFrom(
                                       primary: isAbsenMasukEnabled ? Colors.green : Colors.grey,
                                     ),
@@ -284,6 +291,57 @@ class _AbsenPageState extends State<AbsenPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _absen(String mUserId, String tipe) async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://123.100.226.157:8282/absen/add'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          <String, String>{
+            'muserId': mUserId,
+            'tipe': tipe,
+          },
+        ),
+      );
+
+      final bodyJson = json.decode(response.body);
+
+      bool status = bodyJson['status'];
+      String messageError = bodyJson['message'];
+      if (status == true) {
+
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => HomePageAuth(muserId: widget.muserId, selectMenuIndex: 0),
+            ),
+          );
+
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Absen Gagal'),
+              content: Text(messageError),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (error) {
+      throw error;
+    }
   }
 
   String _getMonthName(int month) {

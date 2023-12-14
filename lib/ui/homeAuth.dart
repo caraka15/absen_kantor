@@ -30,7 +30,7 @@ class _HomePageAuthState extends State<HomePageAuth> {
 
   static List<Widget> _widgetOptions(String muserId) => <Widget>[
         AbsenPage(muserId: muserId),
-        HistoryAbsenPage(),
+        HistoryAbsenPage(muserId: muserId),
         ProfilePage(muserId: muserId),
         EmployeeListWidget(),
       ];
