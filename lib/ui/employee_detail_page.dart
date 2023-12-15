@@ -16,14 +16,14 @@ class EmployeeDetailPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Nama: ${employee.name}'),
-            Text('Posisi: ${employee.position}'),
+            Text('Nama: ${employee.nama}'),
+            Text('Posisi: ${employee.role}'),
             // Tambahan informasi atau fungsi lainnya sesuai kebutuhan
             ElevatedButton(
               onPressed: () {
                 // Tambahkan logika untuk mengunduh data absensi karyawan
                 // Misalnya, panggil fungsi atau tampilkan dialog pengunduhan
-                print('Mengunduh data absensi untuk ${employee.name}');
+                print('Mengunduh data absensi untuk ${employee.nama}');
               },
               child: Text('Unduh Data Absensi'),
             ),

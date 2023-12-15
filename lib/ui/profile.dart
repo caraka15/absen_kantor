@@ -67,7 +67,6 @@ class _ProfileFormState extends State<ProfileForm> {
           // Set nilai default jika diperlukan
           // selectedJabatan = jabatanList.isNotEmpty ? jabatanList[0] : '';
         });
-
       } else {
         throw Exception('Failed to load user data');
       }
@@ -123,7 +122,7 @@ class _ProfileFormState extends State<ProfileForm> {
           nomorTlpController.text = user['noTlp'];
           emailController.text = user['email'];
 
-          if(jabatanController.text.isEmpty) {
+          if (jabatanController.text.isEmpty) {
             jabatanController.text = user['jabatan'];
           }
 
@@ -141,8 +140,7 @@ class _ProfileFormState extends State<ProfileForm> {
                 SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () async {
-
-                    if(isEditing) {
+                    if (isEditing) {
                       await updateUser(
                         widget.muserId,
                         user['nip'],
@@ -195,21 +193,20 @@ class _ProfileFormState extends State<ProfileForm> {
   }
 
   Widget _buildJabatanDropdown(String label, String value) {
-
     return DropdownButtonFormField(
       value: value,
       items: jabatanList
           .map((String jabatan) => DropdownMenuItem(
-        value: jabatan,
-        child: Text(jabatan),
-      ))
+                value: jabatan,
+                child: Text(jabatan),
+              ))
           .toList(),
       onChanged: isEditing
           ? (newValue) {
-        setState(() {
-          jabatanController.text = newValue.toString();
-        });
-      }
+              setState(() {
+                jabatanController.text = newValue.toString();
+              });
+            }
           : null, // nonaktifkan dropdown jika tidak sedang diedit
       decoration: InputDecoration(
         labelText: label,
@@ -218,8 +215,8 @@ class _ProfileFormState extends State<ProfileForm> {
     );
   }
 
-  Future<void> updateUser(String muserId, String nip, String nama, String nomorTlp,
-      String email, String password, String jabatan) async {
+  Future<void> updateUser(String muserId, String nip, String nama,
+      String nomorTlp, String email, String password, String jabatan) async {
     final response = await http.put(
       Uri.parse('http://123.100.226.157:8282/user/edit'),
       headers: <String, String>{
@@ -267,7 +264,8 @@ class _ProfileFormState extends State<ProfileForm> {
       print('Succes');
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => HomePageAuth(muserId: muserId, selectMenuIndex: 2),
+          builder: (context) =>
+              HomePageAuth(muserId: muserId, selectMenuIndex: 2),
         ),
       );
     }

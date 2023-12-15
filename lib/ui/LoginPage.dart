@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key});
@@ -77,7 +77,8 @@ class _LoginPageState extends State<LoginPage> {
           // Token ada, langsung menuju HomePageAuth
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => HomePageAuth(muserId: muserId, selectMenuIndex: 0),
+              builder: (context) =>
+                  HomePageAuth(muserId: muserId, selectMenuIndex: 0),
             ),
           );
         } else {
@@ -116,7 +117,8 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<void> saveTokenToSharedPreferences(String token, String mUserId) async {
+  Future<void> saveTokenToSharedPreferences(
+      String token, String mUserId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('all', token + ',' + mUserId);
   }

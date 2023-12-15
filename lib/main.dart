@@ -5,7 +5,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:absen_kantor/ui/home.dart';
 import 'package:absen_kantor/ui/homeAuth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 
 import 'material/color.dart';
 
@@ -32,14 +31,14 @@ class MyApp extends StatelessWidget {
               String statusPage = values['statusPage'] ?? '';
               int angkaStatusPage = 0;
 
-              if(statusPage != "login" && statusPage != "register") {
-                angkaStatusPage = statusPage.isNotEmpty ? int.parse(
-                    statusPage) : 0;
+              if (statusPage != "login" && statusPage != "register") {
+                angkaStatusPage =
+                    statusPage.isNotEmpty ? int.parse(statusPage) : 0;
               }
 
               String token = "";
               String mUserId = "";
-              if(allValue != '') {
+              if (allValue != '') {
                 List<String> valueSplit = allValue.split(',');
                 token = valueSplit[0];
                 mUserId = valueSplit[1];
@@ -48,29 +47,39 @@ class MyApp extends StatelessWidget {
               // Logika navigasi berdasarkan token dan mUserId
               Widget destinationPage;
               if (token.isNotEmpty && mUserId.isNotEmpty) {
-
-                destinationPage = HomePageAuth(muserId: mUserId, selectMenuIndex: angkaStatusPage);
-              } else if(statusPage == "login"){
-
+                if (values['role'] == 'ADMIN') {
+                  destinationPage = HomePageAuth(
+                    muserId: mUserId,
+                    selectMenuIndex: angkaStatusPage,
+                  );
+                } else {
+                  destinationPage = HomePageAuth(
+                    muserId: mUserId,
+                    selectMenuIndex: angkaStatusPage,
+                  );
+                }
+              } else if (statusPage == "login") {
                 destinationPage = LoginPage();
-              } else if(statusPage == "register") {
-
+              } else if (statusPage == "register") {
                 destinationPage = RegisterPage();
               } else {
-
                 destinationPage = HomePage();
               }
 
               return Navigator(
                 onGenerateRoute: (settings) {
-                  return MaterialPageRoute(builder: (context) => destinationPage);
+                  return MaterialPageRoute(
+                    builder: (context) => destinationPage,
+                  );
                 },
               );
             } else {
               // Jika token atau user key belum ada, navigasi ke halaman home
               return Navigator(
                 onGenerateRoute: (settings) {
-                  return MaterialPageRoute(builder: (context) => HomePage());
+                  return MaterialPageRoute(
+                    builder: (context) => HomePage(),
+                  );
                 },
               );
             }
@@ -81,7 +90,7 @@ class MyApp extends StatelessWidget {
         },
       ),
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: greengood,
       ),
     );
   }

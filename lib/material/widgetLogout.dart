@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:absen_kantor/ui/home.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:absen_kantor/ui/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:absen_kantor/ui/LoginPage.dart';
 
@@ -33,7 +32,7 @@ class LogoutHandler {
                   MaterialPageRoute(
                     builder: (context) => LoginPage(),
                   ),
-                      (Route<dynamic> route) => false,
+                  (Route<dynamic> route) => false,
                 );
               },
               child: Text('Logout'),
