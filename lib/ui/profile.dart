@@ -126,39 +126,42 @@ class _ProfileFormState extends State<ProfileForm> {
             jabatanController.text = user['jabatan'];
           }
 
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 16),
-                _buildProfileField("Nama", user['nama']),
-                _buildProfileField("NIP", user['nip']),
-                _buildProfileField("Email", user['email']),
-                _buildProfileField("No. HP", user['noTlp']),
-                _buildJabatanDropdown("Jabatan", user['jabatan']),
-                _buildProfileField("Role", user['role']),
-                SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (isEditing) {
-                      await updateUser(
-                        widget.muserId,
-                        user['nip'],
-                        namaController.text,
-                        nomorTlpController.text,
-                        emailController.text,
-                        user['password'],
-                        jabatanController.text,
-                      );
-                    }
+          return SingleChildScrollView(
+            // Wrap with SingleChildScrollView
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: 16),
+                  _buildProfileField("Nama", user['nama']),
+                  _buildProfileField("NIP", user['nip']),
+                  _buildProfileField("Email", user['email']),
+                  _buildProfileField("No. HP", user['noTlp']),
+                  _buildJabatanDropdown("Jabatan", user['jabatan']),
+                  _buildProfileField("Role", user['role']),
+                  SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (isEditing) {
+                        await updateUser(
+                          widget.muserId,
+                          user['nip'],
+                          namaController.text,
+                          nomorTlpController.text,
+                          emailController.text,
+                          user['password'],
+                          jabatanController.text,
+                        );
+                      }
 
-                    setState(() {
-                      isEditing = !isEditing;
-                    });
-                  },
-                  child: Text(isEditing ? 'Simpan' : 'Edit'),
-                ),
-              ],
+                      setState(() {
+                        isEditing = !isEditing;
+                      });
+                    },
+                    child: Text(isEditing ? 'Simpan' : 'Edit'),
+                  ),
+                ],
+              ),
             ),
           );
         }
