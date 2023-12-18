@@ -47,7 +47,6 @@ class _RegisterPageState extends State<RegisterPage> {
           // Set nilai default jika diperlukan
           // selectedJabatan = jabatanList.isNotEmpty ? jabatanList[0] : '';
         });
-
       } else {
         throw Exception('Failed to load user data');
       }
@@ -69,13 +68,12 @@ class _RegisterPageState extends State<RegisterPage> {
     prefs.setString('statusPage', 'register');
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Register"),
-        backgroundColor: Colors.green, // Assuming greengood is a Color variable
+        backgroundColor: greengood, // Assuming greengood is a Color variable
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -94,8 +92,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         style: TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
-                          color: Colors
-                              .green, // Assuming greengood is a Color variable
+                          color:
+                              greengood, // Assuming greengood is a Color variable
                         ),
                       ),
                     ),
@@ -200,9 +198,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       value: selectedJabatan,
                       items: jabatanList
                           .map((String jabatan) => DropdownMenuItem(
-                        value: jabatan,
-                        child: Text(jabatan),
-                      ))
+                                value: jabatan,
+                                child: Text(jabatan),
+                              ))
                           .toSet() // Use toSet to eliminate duplicates
                           .toList(),
                       onChanged: (value) {
@@ -278,12 +276,12 @@ class _RegisterPageState extends State<RegisterPage> {
                             if (_formKey.currentState?.validate() ?? false) {
                               // Semua bidang valid, navigasi ke halaman berikutnya
                               createUser(
-                                  nipController.text,
-                                  nameController.text,
-                                  nomorTeleponController.text,
-                                  emailController.text,
-                                  passwordController.text,
-                                  jabatanController.text,
+                                nipController.text,
+                                nameController.text,
+                                nomorTeleponController.text,
+                                emailController.text,
+                                passwordController.text,
+                                jabatanController.text,
                               );
                             }
                           },
@@ -379,7 +377,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     final bodyJson = json.decode(response.body);
     String message = bodyJson['message'];
-    if (statusCode == 400){
+    if (statusCode == 400) {
       // Show a pop-up
       showDialog(
         context: context,

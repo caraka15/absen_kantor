@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: FutureBuilder<Map<String, String>>(
         // Membaca token dan user key dari FlutterSecureStorage
         future: _readKeys(),
@@ -47,17 +48,10 @@ class MyApp extends StatelessWidget {
               // Logika navigasi berdasarkan token dan mUserId
               Widget destinationPage;
               if (token.isNotEmpty && mUserId.isNotEmpty) {
-                if (values['role'] == 'ADMIN') {
-                  destinationPage = HomePageAuth(
-                    muserId: mUserId,
-                    selectMenuIndex: angkaStatusPage,
-                  );
-                } else {
-                  destinationPage = HomePageAuth(
-                    muserId: mUserId,
-                    selectMenuIndex: angkaStatusPage,
-                  );
-                }
+                destinationPage = HomePageAuth(
+                  muserId: mUserId,
+                  selectMenuIndex: angkaStatusPage,
+                );
               } else if (statusPage == "login") {
                 destinationPage = LoginPage();
               } else if (statusPage == "register") {

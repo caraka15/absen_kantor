@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:absen_kantor/material/color.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'employee_detail_page.dart'; // File yang akan dibuat untuk halaman detail
@@ -88,6 +89,7 @@ class _EmployeeListWidgetState extends State<EmployeeListWidget> {
           itemCount: employees.length,
           itemBuilder: (context, index) {
             return Card(
+              color: greengood,
               child: ListTile(
                 title: Text(employees[index].nama),
                 subtitle: Text(employees[index].jabatan),

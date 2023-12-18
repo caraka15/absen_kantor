@@ -332,8 +332,7 @@ class _AbsenPageState extends State<AbsenPage> {
                                           "${time.year}";
 
                                       final formattedTime =
-                                          "${time.hour.toString().padLeft(2, '0')}:"
-                                          "${time.minute.toString().padLeft(2, '0')}:${time.second.toString().padLeft(2, '0')}";
+                                          "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";
 
                                       return Column(
                                         children: [
@@ -363,7 +362,7 @@ class _AbsenPageState extends State<AbsenPage> {
                                                     absenRecords.isNotEmpty
                                                         ? absenRecords
                                                             .last.absenMasuk
-                                                        : "08:00",
+                                                        : "-",
                                                     style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 24,
@@ -388,7 +387,7 @@ class _AbsenPageState extends State<AbsenPage> {
                                                     absenRecords.isNotEmpty
                                                         ? absenRecords
                                                             .last.absenKeluar
-                                                        : "17:00",
+                                                        : "-",
                                                     style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 24,

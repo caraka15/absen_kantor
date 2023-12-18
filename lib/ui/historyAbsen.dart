@@ -100,6 +100,11 @@ class _HistoryAbsenState extends State<HistoryAbsenPage> {
           }
         }
 
+        // Urutkan combinedAbsenRecords berdasarkan tanggal terbaru
+        combinedAbsenRecords.sort(
+          (a, b) => b.parsedTanggal.compareTo(a.parsedTanggal),
+        );
+
         // Mengatur ulang tampilan setelah mendapatkan data baru
         setState(() {});
       } else {
@@ -154,9 +159,13 @@ class _HistoryAbsenState extends State<HistoryAbsenPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                          'Jam Masuk: ${combinedAbsenRecords[index].jamMasuk}'),
+                        'Masuk: ${combinedAbsenRecords[index].jamMasuk}',
+                        style: TextStyle(color: Colors.white),
+                      ),
                       Text(
-                          'Jam Keluar: ${combinedAbsenRecords[index].jamKeluar}'),
+                        'Keluar: ${combinedAbsenRecords[index].jamKeluar}',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ],
                   ),
                 ),
@@ -179,4 +188,6 @@ class CombinedAbsenRecord {
     required this.jamMasuk,
     required this.jamKeluar,
   });
+
+  DateTime get parsedTanggal => DateTime.parse(tanggal);
 }
