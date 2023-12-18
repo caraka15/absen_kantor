@@ -42,7 +42,7 @@ class ProfileForm extends StatefulWidget {
 }
 
 class _ProfileFormState extends State<ProfileForm> {
-  bool isEditing = false;
+  bool isEditing = true; // Default ke mode editing
   late Future<Map<String, dynamic>> userData;
 
   List<String> jabatanList = []; // Daftar nama jabatan dari API
@@ -64,15 +64,12 @@ class _ProfileFormState extends State<ProfileForm> {
 
         setState(() {
           jabatanList = namaJabatan;
-          // Set nilai default jika diperlukan
-          // selectedJabatan = jabatanList.isNotEmpty ? jabatanList[0] : '';
         });
       } else {
         throw Exception('Failed to load user data');
       }
     } catch (error) {
       print('Error fetching user data: $error');
-      // Handle error, mungkin tampilkan pesan kesalahan ke pengguna
     }
   }
 
@@ -127,7 +124,6 @@ class _ProfileFormState extends State<ProfileForm> {
           }
 
           return SingleChildScrollView(
-            // Wrap with SingleChildScrollView
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -152,11 +148,16 @@ class _ProfileFormState extends State<ProfileForm> {
                           user['password'],
                           jabatanController.text,
                         );
+                        // Setelah menyimpan, ubah mode ke non-editing
+                        setState(() {
+                          isEditing = false;
+                        });
+                      } else {
+                        // Jika tidak dalam mode editing, ubah ke mode editing
+                        setState(() {
+                          isEditing = true;
+                        });
                       }
-
-                      setState(() {
-                        isEditing = !isEditing;
-                      });
                     },
                     child: Text(isEditing ? 'Simpan' : 'Edit'),
                   ),
@@ -174,8 +175,6 @@ class _ProfileFormState extends State<ProfileForm> {
     return TextFormField(
       controller: controller,
       onChanged: (value) {
-        // Panggil ini ketika nilai berubah
-        // Pastikan untuk memastikan bahwa `controller` mengacu pada controller yang benar
         if (label == "No. HP") {
           nomorTlpController.text = value;
         }
@@ -210,7 +209,7 @@ class _ProfileFormState extends State<ProfileForm> {
                 jabatanController.text = newValue.toString();
               });
             }
-          : null, // nonaktifkan dropdown jika tidak sedang diedit
+          : null,
       decoration: InputDecoration(
         labelText: label,
         enabled: isEditing,
@@ -241,27 +240,7 @@ class _ProfileFormState extends State<ProfileForm> {
       ),
     );
 
-    Object jsonObject = {
-      'muserId': muserId,
-      'nip': nip,
-      'nama': nama,
-      'noTlp': nomorTlp,
-      'email': email,
-      'password': password,
-      'role': 'PEGAWAI',
-      'jabatan': jabatan,
-      'updatedBy': muserId,
-      'isactive': 'Y',
-    };
-
-    print('JSON: $jsonObject');
-
     int statusCode = response.statusCode;
-
-    print('StatusCode: $statusCode');
-    // final bodyJson = json.decode(response.body);
-
-    // bool status = bodyJson['status'];
 
     if (statusCode == 200) {
       print('Succes');

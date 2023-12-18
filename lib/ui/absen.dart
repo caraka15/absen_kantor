@@ -4,6 +4,7 @@ import 'package:absen_kantor/ui/homeAuth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,10 +17,23 @@ class AbsenPage extends StatefulWidget {
   State<AbsenPage> createState() => _AbsenPageState();
 }
 
+class AbsenRecord {
+  final String tanggal;
+  final String absenMasuk;
+  final String absenKeluar;
+
+  AbsenRecord({
+    required this.tanggal,
+    required this.absenMasuk,
+    required this.absenKeluar,
+  });
+}
+
 class _AbsenPageState extends State<AbsenPage> {
   late Future<Map<String, dynamic>> userData;
   bool isAbsenMasukEnabled = false;
   bool isAbsenKeluarEnabled = false;
+  List<AbsenRecord> absenRecords = [];
 
   @override
   void initState() {
@@ -28,6 +42,7 @@ class _AbsenPageState extends State<AbsenPage> {
     _initializeStatusPage();
     _fetchStatusAbsenMasuk();
     _fetchStatusAbsenKeluar();
+    _getDataHistory();
   }
 
   Future<void> _initializeStatusPage() async {
@@ -92,6 +107,162 @@ class _AbsenPageState extends State<AbsenPage> {
       setState(() {
         isAbsenKeluarEnabled = statusKeluar['enabled'] ?? false;
       });
+    }
+  }
+
+  Future<void> _getDataHistory() async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+            'http://123.100.226.157:8282/absen/getList?mUserId=${widget.muserId}'),
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body)['data'];
+
+        absenRecords.clear();
+
+        String? jamMasuk;
+        String? jamKeluar;
+        String? tanggal;
+
+        for (var item in data) {
+          DateTime createdDateTime = DateTime.parse(item['created']);
+          DateTime adjustedDateTime = createdDateTime.add(Duration(hours: 7));
+          String formattedDate =
+              DateFormat('yyyy-MM-dd').format(adjustedDateTime);
+          String formattedTime = DateFormat('HH:mm').format(adjustedDateTime);
+
+          if (item['tipe'] == 'MASUK') {
+            jamMasuk = formattedTime;
+            tanggal = formattedDate;
+          } else if (item['tipe'] == 'KELUAR') {
+            jamKeluar = formattedTime;
+            tanggal = formattedDate;
+          }
+
+          if (jamMasuk != null && jamKeluar != null && tanggal != null) {
+            AbsenRecord absenRecord = AbsenRecord(
+              tanggal: tanggal,
+              absenMasuk: jamMasuk,
+              absenKeluar: jamKeluar,
+            );
+            absenRecords.add(absenRecord);
+
+            // Reset untuk absen selanjutnya
+            jamMasuk = null;
+            jamKeluar = null;
+            tanggal = null;
+          }
+        }
+
+        setState(() {});
+      } else {
+        print("Gagal mendapatkan data: ${response.statusCode}");
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future<Map<String, dynamic>> _fetchCurrentTime() async {
+    final response = await http.get(
+      Uri.parse('http://worldtimeapi.org/api/ip'),
+    );
+
+    if (response.statusCode == 200) {
+      final bodyJson = json.decode(response.body);
+      DateTime utcTime = DateTime.parse(bodyJson['utc_datetime']);
+      DateTime wibTime = utcTime.add(Duration(hours: 7));
+
+      return {
+        'utc_datetime': wibTime.toUtc().toIso8601String(),
+      };
+    } else {
+      throw Exception('Failed to load current time');
+    }
+  }
+
+  Future<void> _absen(String mUserId, String tipe) async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://123.100.226.157:8282/absen/add'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          <String, String>{
+            'muserId': mUserId,
+            'tipe': tipe,
+          },
+        ),
+      );
+
+      final bodyJson = json.decode(response.body);
+
+      bool status = bodyJson['status'];
+      String messageError = bodyJson['message'];
+      if (status == true) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => HomePageAuth(
+              muserId: widget.muserId,
+              selectMenuIndex: 0,
+            ),
+          ),
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Absen Gagal'),
+              content: Text(messageError),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  String _getMonthName(int month) {
+    switch (month) {
+      case 1:
+        return 'Januari';
+      case 2:
+        return 'Februari';
+      case 3:
+        return 'Maret';
+      case 4:
+        return 'April';
+      case 5:
+        return 'Mei';
+      case 6:
+        return 'Juni';
+      case 7:
+        return 'Juli';
+      case 8:
+        return 'Agustus';
+      case 9:
+        return 'September';
+      case 10:
+        return 'Oktober';
+      case 11:
+        return 'November';
+      case 12:
+        return 'Desember';
+      default:
+        return '';
     }
   }
 
@@ -189,7 +360,10 @@ class _AbsenPageState extends State<AbsenPage> {
                                               Column(
                                                 children: [
                                                   Text(
-                                                    "08.00",
+                                                    absenRecords.isNotEmpty
+                                                        ? absenRecords
+                                                            .last.absenMasuk
+                                                        : "08:00",
                                                     style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 24,
@@ -207,11 +381,14 @@ class _AbsenPageState extends State<AbsenPage> {
                                               ),
                                               SizedBox(
                                                 width: 20,
-                                              ), // Jarak antara masuk dan keluar
+                                              ),
                                               Column(
                                                 children: [
                                                   Text(
-                                                    "16.00",
+                                                    absenRecords.isNotEmpty
+                                                        ? absenRecords
+                                                            .last.absenKeluar
+                                                        : "17:00",
                                                     style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 24,
@@ -240,7 +417,7 @@ class _AbsenPageState extends State<AbsenPage> {
                         ),
                         SizedBox(height: 20),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Visibility(
                               visible: isAbsenMasukEnabled,
@@ -315,100 +492,5 @@ class _AbsenPageState extends State<AbsenPage> {
         ),
       ),
     );
-  }
-
-  Future<Map<String, dynamic>> _fetchCurrentTime() async {
-    final response = await http.get(
-      Uri.parse('http://worldtimeapi.org/api/ip'),
-    );
-
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else {
-      throw Exception('Failed to load current time');
-    }
-  }
-
-  Future<void> _absen(String mUserId, String tipe) async {
-    try {
-      final response = await http.post(
-        Uri.parse('http://123.100.226.157:8282/absen/add'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(
-          <String, String>{
-            'muserId': mUserId,
-            'tipe': tipe,
-          },
-        ),
-      );
-
-      final bodyJson = json.decode(response.body);
-
-      bool status = bodyJson['status'];
-      String messageError = bodyJson['message'];
-      if (status == true) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => HomePageAuth(
-              muserId: widget.muserId,
-              selectMenuIndex: 0,
-            ),
-          ),
-        );
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Absen Gagal'),
-              content: Text(messageError),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  String _getMonthName(int month) {
-    switch (month) {
-      case 1:
-        return 'Januari';
-      case 2:
-        return 'Februari';
-      case 3:
-        return 'Maret';
-      case 4:
-        return 'April';
-      case 5:
-        return 'Mei';
-      case 6:
-        return 'Juni';
-      case 7:
-        return 'Juli';
-      case 8:
-        return 'Agustus';
-      case 9:
-        return 'September';
-      case 10:
-        return 'Oktober';
-      case 11:
-        return 'November';
-      case 12:
-        return 'Desember';
-      default:
-        return '';
-    }
   }
 }
