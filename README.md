@@ -14,10 +14,10 @@ Proyek Flutter ini dibuat untuk mengelola absensi karyawan di kantor. Aplikasi i
 ## Cara Konfigurasi Awal
 
 ### 1. Clone Repositori
-```bash
+```
 git clone https://github.com/caraka15/absen_kantor.git
 cd absen_kantor
-
+```
 ### 2. Install dependencies
 ```
 flutter pub get
