@@ -1,16 +1,29 @@
-# absen_kantor
+# Absensi Kantor Flutter Project
 
-A new Flutter project.
+## Deskripsi Proyek
+Proyek Flutter ini dibuat untuk mengelola absensi karyawan di kantor. Aplikasi ini memungkinkan pengguna untuk melakukan login, register, absen masuk, absen keluar, melihat riwayat absen, dan mengedit profil pengguna.
 
-## Getting Started
+## Fitur-fitur Utama
+1. **Login:** Pengguna dapat masuk ke aplikasi dengan menggunakan akun yang telah terdaftar.
+2. **Register:** Pengguna dapat membuat akun baru dengan mengisi formulir pendaftaran.
+3. **Absen Masuk:** Pengguna dapat mencatat kehadiran dengan melakukan absen masuk.
+4. **Absen Keluar:** Pengguna dapat mencatat kehadiran dengan melakukan absen keluar.
+5. **History Absen:** Pengguna dapat melihat riwayat absensi mereka.
+6. **Edit Profil:** Pengguna dapat mengedit informasi profil mereka.
 
-This project is a starting point for a Flutter application.
+## Cara Konfigurasi Awal
 
-A few resources to get you started if this is your first Flutter project:
+### 1. Clone Repositori
+```bash
+git clone https://github.com/caraka15/absen_kantor.git
+cd absen_kantor
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 2. Install dependencies
+```
+flutter pub get
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 3. Menjalankan Aplikasi
+```
+flutter run
+```
